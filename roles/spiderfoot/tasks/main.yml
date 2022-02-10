@@ -1,0 +1,47 @@
+- name: Add user to run spiderfoot
+  become: true
+  user:
+    name: "{{ spiderfoot_user }}"
+    comment: User to run spiderfoot
+    shell: /bin/bash
+    password: "{{ spiderfoot_user_password }}"
+
+- name: Install spiderfoot dependencies
+  become: true
+  dnf:
+    name:
+      - python3
+      - tar
+    state: latest
+
+- name: Create ~/bin directory
+  become: true
+  become_user: "{{ spiderfoot_user }}"
+  file:
+    path: ~/bin
+    owner: "{{ spiderfoot_user }}"
+    group: "{{ spiderfoot_user }}"
+    mode: 0770
+    state: directory
+
+- name: Download spiderfoot package
+  become: true
+  become_user: "{{ spiderfoot_user }}"
+  get_url:
+    url: "{{ spiderfoot_package }}"
+    dest: ~/spiderfoot.tar.gz
+
+- name: Extract spiderfoot
+  become: true
+  become_user: "{{ spiderfoot_user }}"
+  unarchive:
+    remote_src: true
+    src: ~/spiderfoot.tar.gz
+    dest: ~/bin/
+
+- name: Remove spiderfoot archive
+  become: true
+  become_user: spiderfoot
+  file:
+    path: ~/spiderfoot.tar.gz
+    state: absent
