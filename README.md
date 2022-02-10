@@ -10,7 +10,7 @@ Collection of scripts and ansible playbooks to setup OSINT server environmen.
 1. Install ansible
 1. Generate password for spiderfoot user. See:
 https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#how-do-i-generate-encrypted-passwords-for-the-user-module
-1. Update hosts file to correspond your environment. Here is example
+1. Create ```hosts``` file to project root. Here is example
 ```
 [spiderfoot]
 crawler     ansible_host=<ip address>
